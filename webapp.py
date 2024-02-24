@@ -46,26 +46,28 @@ def getResult(JD_txt,resume_txt):
 
     match = similarity_matrix[0][1] * 100
 
-    return match, similarity_matrix
+    return match, similarity_matrix, cv
 
 
 #button 
 
 if click:
-    match, similarity_matrix = getResult(job_description,resume)
+    match, similarity_matrix, cv = getResult(job_description,resume)
     match = round(match,2)
     st.write("Match Percentage: ", match, "%")
     st.write("Details of matching data:")
     st.write("Cosine Similarity Matrix:")
     st.write(similarity_matrix)
     st.write("Matching Keywords:")
-    cv = CountVectorizer()
-    matrix = cv.fit_transform([job_description, resume])
     job_keywords = cv.get_feature_names_out()
     matching_keywords = []
-    for idx, val in enumerate(matrix.toarray()[0]):
-        if val > 0 and job_keywords[idx] not in matching_keywords:
+    for idx, val in enumerate(similarity_matrix.toarray()[0]):
+        if val > 0:
             matching_keywords.append(job_keywords[idx])
-    st.write(matching_keywords)
+    highlighted_resume = resume
+    for keyword in matching_keywords:
+        highlighted_resume = highlighted_resume.replace(keyword, f"<mark>{keyword}</mark>")
+    st.write("Highlighted Resume:")
+    st.markdown(highlighted_resume, unsafe_allow_html=True)
 
 st.caption(" ~ made by siddhraj")
