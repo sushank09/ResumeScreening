@@ -3,6 +3,7 @@ import PyPDF2
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
 
 st.title("Candidate Selection Tool")
 
@@ -66,10 +67,13 @@ if click:
             matching_keywords.append(job_keywords[idx])
     st.write(matching_keywords)
     
-    # Plotting bar chart
+    # Convert dictionary to DataFrame
     keyword_counts = {}
     for keyword in matching_keywords:
         keyword_counts[keyword] = resume.lower().count(keyword.lower())
-    st.bar_chart(keyword_counts)
+    df = pd.DataFrame.from_dict(keyword_counts, orient='index', columns=['Count'])
+    
+    # Plotting bar chart
+    st.bar_chart(df)
 
 st.caption(" ~ made by siddhraj")
