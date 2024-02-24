@@ -3,7 +3,6 @@ import PyPDF2
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import matplotlib.pyplot as plt
 
 st.title("Candidate Selection Tool")
 
@@ -67,15 +66,10 @@ if click:
             matching_keywords.append(job_keywords[idx])
     st.write(matching_keywords)
     
-    # Plotting pie chart
-    plt.figure(figsize=(8, 6))
+    # Plotting bar chart
     keyword_counts = {}
     for keyword in matching_keywords:
         keyword_counts[keyword] = resume.lower().count(keyword.lower())
-    labels = keyword_counts.keys()
-    sizes = keyword_counts.values()
-    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
-    plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    st.pyplot(plt)
+    st.bar_chart(keyword_counts)
 
 st.caption(" ~ made by siddhraj")
