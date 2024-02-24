@@ -61,7 +61,7 @@ if click:
     st.write("Matching Keywords:")
     job_keywords = cv.get_feature_names_out()
     matching_keywords = []
-    for idx, val in enumerate(similarity_matrix.toarray()[0]):
+    for idx, val in enumerate(similarity_matrix[0]):
         if val > 0:
             matching_keywords.append(job_keywords[idx])
     highlighted_resume = resume
