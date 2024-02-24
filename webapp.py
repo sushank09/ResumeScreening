@@ -4,6 +4,11 @@ import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
+from google.cloud import firestore
+import datetime
+
+# Authenticate to Firestore with the JSON account key.
+db = firestore.Client.from_service_account_json("firestore-key.json")
 
 st.title("Candidate Selection Tool")
 
@@ -17,6 +22,22 @@ uploadedResume = st.file_uploader("Upload resume",type="pdf")
 
 click = st.button("Process")
 
+# Define a function to store the data
+def store_data(job_description, resume, match_percentage):
+    # Create a reference to the collection
+    data_ref = db.collection('resume_matches')
+    Timestamp = datetime.datetime.now()
+    # Format the data
+    data = {
+        'job_description': job_description,
+        'resume': resume,
+        'match_percentage': match_percentage,
+        'timestamp': Timestamp
+    }
+
+    # Add the data to the collection
+    data_ref.add(data)
+    
 try:
     global job_description
     with pdfplumber.open(uploadedJD) as pdf:
@@ -78,5 +99,7 @@ if click:
     ax.set_title('Similarity Comparison')
     st.pyplot(fig)
 
-st.caption(" ~ made by team")
-
+    # Store the data
+    store_data(job_description, resume, match)
+    
+st.caption(" ~ made by vilas")
