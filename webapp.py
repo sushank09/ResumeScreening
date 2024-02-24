@@ -3,13 +3,12 @@ import PyPDF2
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import matplotlib.pyplot as plt
 
 st.title("Candidate Selection Tool")
 
 st.subheader("NLP Based Resume Screening")
 
-st.caption("Aim of this project is to check whether a candidate is qualified for a role based on his or her education, experience, and other information captured on their resume. In a nutshell, it's a form of pattern matching between a job's requirements and the qualifications of a candidate based on their resume.")
+st.caption("Aim of this project is to check whether a candidate is qualified for a role based his or her education, experience, and other information captured on their resume. In a nutshell, it's a form of pattern matching between a job's requirements and the qualifications of a candidate based on their resume.")
 
 uploadedJD = st.file_uploader("Upload Job Description", type="pdf")
 
@@ -65,20 +64,10 @@ if click:
     for idx, val in enumerate(similarity_matrix[0]):
         if val > 0:
             matching_keywords.append(job_keywords[idx])
-    st.write(matching_keywords)
-    
-    # Convert dictionary to DataFrame
-    keyword_counts = {}
+    highlighted_resume = resume
     for keyword in matching_keywords:
-        keyword_counts[keyword] = resume.lower().count(keyword.lower())
-    
-    # Plotting bar chart
-    plt.figure(figsize=(10,6))
-    plt.bar(keyword_counts.keys(), keyword_counts.values())
-    plt.xlabel('Keywords')
-    plt.ylabel('Count')
-    plt.title('Matching Keywords Count')
-    plt.xticks(rotation=45, ha='right')
-    st.pyplot(plt)
+        highlighted_resume = highlighted_resume.replace(keyword, f"<mark>{keyword}</mark>")
+    st.write("Highlighted Resume:")
+    st.markdown(highlighted_resume, unsafe_allow_html=True)
 
 st.caption(" ~ made by siddhraj")
