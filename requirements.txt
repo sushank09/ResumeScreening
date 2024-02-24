@@ -2,3 +2,4 @@ pdfplumber==0.7.4
 PyPDF2==2.10.4
 scikit_learn==1.1.2
 streamlit==1.12.2
+matplotlib==3.8.3
