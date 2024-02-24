@@ -152,5 +152,5 @@ if click:
     ax.set_title('Similarity Comparison')
     st.pyplot(fig)
 
-st.caption(" ~ made by vilas
-")
+st.caption(" ~ made by vilas")
+
