@@ -102,4 +102,4 @@ if click:
     # Store the data
     store_data(job_description, resume, match)
     
-st.caption(" ~ made by vilas")
+st.caption(" ~ made by team")
